@@ -1,17 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import Counter from './Counter';
-import reportWebVitals from './reportWebVitals';
+// server/models/index.js
+const sequelize = require('../config/database');
+const User = require('./User');
+const Post = require('./Post');
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Counter />
-  </React.StrictMode>
-);
+// Set up associations
+User.hasMany(Post, { foreignKey: 'userId' });
+Post.belongsTo(User, { foreignKey: 'userId' });
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const db = {
+    sequelize,
+    User,
+    Post
+};
+
+module.exports = db;
